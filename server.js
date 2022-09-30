@@ -31,6 +31,7 @@ db.mongoose.connect(db.url,{
   })
 
   require('./routes/user.routes')(app)
+  require('./routes/tutorial.routes')(app)
   const port=8080;
   app.listen(port,()=>{
     console.log('Server is listening at port 8080')

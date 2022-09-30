@@ -4,7 +4,8 @@ module.exports=mongoose=>{
         password:{type:String},
         firstName:{type:String},
         lastName:{type:String},
-        isLoggedIn:{type:Boolean}
+        isLoggedIn:{type:Boolean},
+        token:String
     },{
         timestamps:true
     }))
