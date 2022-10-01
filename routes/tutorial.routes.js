@@ -4,6 +4,9 @@ module.exports=app=>{
     
     var  router=require('express').Router();
    
-    router.get('/show',Tutorial.getCourse)
-    app.use('/api',auth,router)
+    router.post('/add',Tutorial.AddCourse);
+    router.get('/show',Tutorial.getAllCourses);
+    router.get('/:id',Tutorial.getCourseById);
+    router.get('/',Tutorial.getCourseByTitle);
+    app.use('/api/tutorial',auth,router)
 }
