@@ -24,12 +24,12 @@ exports.signup=(req,res)=>{
         user.save(user).then((data)=>{
             res.send(data)
         }).catch((err)=>{
-            res.status(500).send('Some error occurred, Please try again!')
+            res.status(500).json({message:'Some error occurred, Please try again!'})
         })
     }
     else
     {
-        res.status(500).send('User already exists!')
+        res.status(500).json({message:'User already exists!'})
     }
    })
 }
@@ -41,13 +41,13 @@ exports.login=(req,res)=>{
   const password=req.body.password;
   if(!email && !password)
   {
-    res.status(400).send('Please enter all the details!');
+    res.status(400).json({message:'Please enter all the details!'});
     return;
   }
   User.findOne({email:email},(err,data)=>{
     if(err || data===null)
     {
-        res.status(401).send('User not Found. Please signup!');
+        res.status(401).json({message:'User not Found. Please signup!'});
         return;
     }
     if(bcrypt.compareSync(password,data.password))
@@ -56,23 +56,23 @@ exports.login=(req,res)=>{
         User.findOneAndUpdate({email:email},update,{ useFindAndModify: false }).then((data)=>{
             if(!data)
             {
-                res.status(500).send('Some Error occurred!')
+                res.status(500).json({message:'Some Error occurred!'})
                 return;
             }
             const token=jwt.sign({_id:data._id},'shruv')
             data.token=token;
-            res.send({
-                data
+            res.json({
+                message:data
             });
 
         }).catch(err=>{
-            res.status(500).send('some error occurred!')
+            res.status(500).json({message:'some error occurred!'})
         })
        
     }
     else
     {
-        res.status(401).send('Email or password not correct!')
+        res.status(401).json({message:'Email or password not correct!'})
     }
 
   })
@@ -83,7 +83,7 @@ exports.logout=(req,res)=>{
    
     if(!req.body.id)
     {
-        res.status(400).send('Please provide user Id');
+        res.status(400).json({message:'Please provide user Id'});
         return;
     }
     const id=req.body.id;
@@ -91,7 +91,7 @@ exports.logout=(req,res)=>{
     User.findOneAndUpdate({_id:id},update).then(data=>{
         if(!data)
         {
-            res.status(400).send('Some error occurred!')
+            res.status(400).json({message:'Some error occurred!'})
             return;
         }
       res.send({
@@ -99,7 +99,7 @@ exports.logout=(req,res)=>{
         message2:data
       })
     }).catch(err=>{
-        res.status(500).send({
+        res.status(500).json({
             message:'Error updating'
         })
     })
